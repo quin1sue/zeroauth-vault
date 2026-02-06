@@ -8,16 +8,13 @@ class VaultItem(Base):
     __tablename__ = "vault_items"
 
     id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
-    key_id = Column(UUID(as_uuid=True), ForeignKey("keys.id")) # Which key locked this?
-    
-    # Metadata
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))    
+    # metadata
     site_name = Column(String, nullable=False)
     url = Column(String, nullable=True)
     
     encrypted_username = Column(String, nullable=False)
     encrypted_password = Column(String, nullable=False)
-
-    # Relationships
+    encryption_nonce = Column(String, nullable=False)  # nonce used for encryption
+    # relationships
     owner = relationship("User", back_populates="vault_items")
-    key = relationship("Key")
